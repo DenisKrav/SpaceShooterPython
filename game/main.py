@@ -1,6 +1,18 @@
 from pygame import *
 import sys
 from random import randint
+import os
+
+def resource_path(relative_path):
+    """Отримати абсолютний шлях до ресурсу, враховуючи запакований .exe"""
+    try:
+        # Якщо програма запакована у виконуваний файл
+        base_path = sys._MEIPASS
+    except AttributeError:
+        # Якщо запускається як скрипт
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 class Area():
     def __init__(self, x=0, y=0, width=10, height=10, color=(156, 37, 134)):
@@ -39,12 +51,12 @@ init()
 sW = 700
 sH = 700
 
-backgroundImg = transform.scale(image.load("assets/images/background.jpg"), (sW, sH))
+backgroundImg = transform.scale(image.load(resource_path("assets/images/background.jpg")), (sW, sH))
 screen = display.set_mode((sW, sH))
 
 clock = time.Clock()
 
-rocket = Picture("assets/images/spaceship.png", int(sW * 0.42), int(sH * 0.80), 60, 60)
+rocket = Picture(resource_path("assets/images/spaceship.png"), int(sW * 0.42), int(sH * 0.80), 60, 60)
 rocketV = 10
 
 ufos = []
@@ -62,9 +74,9 @@ points = 0
 scoreLabel = Label(50, 30, 0, 0, (0, 0, 0))
 scoreLabel.set_text(f"Score: {points}", 30, (255, 255, 255))
 
-shoot_sound = mixer.Sound("assets/music/vyistrel2.mp3")
+shoot_sound = mixer.Sound(resource_path("assets/music/vyistrel2.mp3"))
 
-fon_music = mixer.Sound("assets/music/fonMusic.mp3")
+fon_music = mixer.Sound(resource_path("assets/music/fonMusic.mp3"))
 fon_music.play()
 
 while True:
@@ -97,10 +109,10 @@ while True:
 
         if randint(1, 100) < 2:
             ufo_x = randint(0, sW - 60)
-            new_ufo = Picture("assets/images/ufo2.png", ufo_x, 0, 60, 60)
+            new_ufo = Picture(resource_path("assets/images/ufo2.png"), ufo_x, 0, 60, 60)
             isStar = randint(1, 100) < 10
             if isStar:
-                new_ufo = Picture("assets/images/star.png", ufo_x, 0, 60, 60, True)
+                new_ufo = Picture(resource_path("assets/images/star.png"), ufo_x, 0, 60, 60, True)
             ufos.append(new_ufo)
 
         ufos = [ufo for ufo in ufos if ufo.rect.y <= sH]
@@ -159,7 +171,7 @@ while True:
         elif ev.type == KEYDOWN:
             if ev.key == K_SPACE:
                 shoot_sound.play()
-                new_bullet = Picture("assets/images/bullet.png", rocket.rect.centerx - 15, rocket.rect.y, 30, 30)
+                new_bullet = Picture(resource_path("assets/images/bullet.png"), rocket.rect.centerx - 15, rocket.rect.y, 30, 30)
                 bullets.append(new_bullet)
 
     clock.tick(60)

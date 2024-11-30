@@ -3,21 +3,24 @@
 ### Як зібрати гри у виконуваний файл:
 
 1. Встановити бібліотеку: ```pip install pyinstaller```
-2. Використовувати для шляхів у коді такий метод (далі код методу для визначення ффайлу в залежності від виду запуску з прикладом використання): 
+2. Використовувати для шляхів у коді такий метод (далі код методу для визначення ффайлу в залежності від виду запуску з прикладом використання):
+
 ```python
 import os
 import sys
 
-def resource_path(relative_path):
-    """Отримати абсолютний шлях до ресурсу, враховуючи запакований .exe"""
-    try:
-        # Якщо програма запакована у виконуваний файл
-        base_path = sys._MEIPASS
-    except AttributeError:
-        # Якщо запускається як скрипт
-        base_path = os.path.abspath(".")
 
-    return os.path.join(base_path, relative_path)
+def resource_path(relative_path):
+   """Отримати абсолютний шлях до ресурсу, враховуючи запакований .exe"""
+   try:
+      # Якщо програма запакована у виконуваний файл
+      base_path = sys._MEIPASS
+   except AttributeError:
+      # Якщо запускається як скрипт
+      base_path = os.path.abspath(".")
+
+   return os.path.join(base_path, relative_path)
+
 
 # Приклад використання
 image_path = resource_path("assets/images/my_image.png")
